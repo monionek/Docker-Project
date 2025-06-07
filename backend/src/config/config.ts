@@ -18,6 +18,7 @@ interface Config {
   dbPass: string;
   dbHost: string;
   jwtSecret: string;
+  adminSecret: string;
 }
 
 const config: Config = {
@@ -26,7 +27,8 @@ const config: Config = {
   dbUser: process.env.DB_USER,
   dbPass: process.env.DB_PASS,
   dbHost: process.env.DB_HOST,
-  jwtSecret: process.env.JWT_SECRET
+  jwtSecret: process.env.JWT_SECRET,
+  adminSecret: process.env.ADMIN_SECRET
 };
 
 export default config;

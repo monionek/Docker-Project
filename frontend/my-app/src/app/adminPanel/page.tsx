@@ -40,22 +40,25 @@ export default function AdminPage() {
     fetchUsers(token);
   }, []);
 
-  const fetchUsers = async (token: string) => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      setUsers(data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Fetch error:', error);
-    }
-  };
+const fetchUsers = async (token: string) => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/list/users`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    console.log(data.users);
+    setUsers(data.users);
+    setIsLoading(false);
+  } catch (error) {
+    console.error('Fetch error:', error);
+  }
+};
+
 
   const deleteUser = async (id: string) => {
     const token = localStorage.getItem('token');
     try {
+      console.log(id);
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/delete/${id}`, {
         method: 'DELETE',
         headers: {

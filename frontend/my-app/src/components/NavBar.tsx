@@ -26,10 +26,12 @@ const Navbar = () => {
       </div>
       <div className="flex gap-4">
         <Link href="/">Home</Link>
+        <Link href="/adminPanel">Admin Page</Link>
         {!isAuthenticated ? (
         <>
           <Link href="/login">Login</Link>
           <Link href="/register">Register</Link>
+          <Link href="/registerAdmin">Register Admin</Link>
         </>
         ) : (
           <button onClick={handleLogout} className="hover:text-red-400">

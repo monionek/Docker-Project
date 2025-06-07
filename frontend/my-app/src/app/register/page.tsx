@@ -24,7 +24,7 @@ export default function RegisterPage() {
       alert('Registration successful!');
       router.push('/login');
     } else {
-      alert(data.message || 'Registration failed');
+      alert('Registration failed');
     }
   };
 
