@@ -1,14 +1,17 @@
 import express from "express";
 import helmet from "helmet";
-import cors from "cors";
+import cors from 'cors';
 import { json } from "body-parser";
 import { errorHandler } from "./middlewares/errorHandler";
 import { connectPostgres } from "./db/postgres";
 import config from "./config/config";
 import userRoutes from "./routes/userRoutes";
 const app = express();
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+}));
 app.use(helmet());
-app.use(cors());
 app.use(json());
 
 //DB Connection

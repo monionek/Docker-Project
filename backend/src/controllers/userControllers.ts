@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { User } from '../models/postgresModels/User';
 import { Op } from 'sequelize';
 import { generateToken } from '../utils/jwtGenerate';
-
+import config from "../config/config"
 export const registerUser = async (req: Request, res: Response) => {
     try {
     const {email, username, password} = req.body;
@@ -10,7 +10,7 @@ export const registerUser = async (req: Request, res: Response) => {
     const existingUser = await User.findAll({
         where: {[Op.or]: [{email: email}, {username: username}]}
     })
-    if (existingUser) {
+    if (existingUser.length > 0) {
         res.status(403).json({message: "username or email taken"});
         return;
     }
@@ -71,6 +71,7 @@ export const getUser = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
     try  {
         const userId = req.params.id;
+        console.log('Deleting userId:', userId)
         const user = await User.findByPk(userId);
         if (!user) {
             res.status(404).json({message: "user not found"});
@@ -87,7 +88,7 @@ export const deleteUser = async (req: Request, res: Response) => {
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
     const users = await User.findAll({
-      attributes: ['id', 'username', 'email', 'role', 'createdAt'] // wykluczamy hasła
+        where: {role : "user"}
     });
 
     res.status(200).json({ users });
@@ -95,4 +96,36 @@ export const getAllUsers = async (req: Request, res: Response) => {
     console.error(error);
     res.status(500).json({ message: 'Error fetching users' });
   }
+};
+
+
+export const registerAdmin = async (req: Request, res: Response) => {
+    try {
+    const {email, username, password, adminSecret} = req.body;
+
+    const existingUser = await User.findAll({
+        where: {[Op.or]: [{email: email}, {username: username}]}
+    })
+    if (existingUser.length > 0) {
+        res.status(403).json({message: "username or email taken"});
+        return;
+    }
+    if (adminSecret !== config.adminSecret) {
+        console.log(config.adminSecret);
+        console.log("elo żelo");
+        res.status(403).json({message: "acces denied"});
+        return;
+    }
+    const role = "admin";
+    const newAdmin = await User.create({
+        username,
+        email,
+        password,
+        role
+    });
+    res.status(201).json({message: newAdmin})
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: error});
+    }
 };
