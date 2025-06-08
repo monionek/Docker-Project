@@ -40,7 +40,7 @@ services:
     depends_on:
       - backend
     env_file:
-    - ./frontend/my-app/.env
+    - ./frontend/my-app/.env.docker
     ports:
       - "3000:3000"
     networks:

@@ -9,6 +9,7 @@ export default function LoginPage() {
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log(process.env.NEXT_PUBLIC_API_URL)
     e.preventDefault();
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
