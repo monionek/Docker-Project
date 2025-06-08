@@ -24,6 +24,14 @@ services:
       - "5000:5000"
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health/healthCheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ./backend:/app
+    command: npm run dev
 
   frontend:
     build:
@@ -37,6 +45,9 @@ services:
       - "3000:3000"
     networks:
       - app-network
+    volumes:
+      - ./frontend/my-app:/app
+    command: npm run dev
 
 volumes:
   pgdata:

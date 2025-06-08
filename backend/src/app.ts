@@ -6,6 +6,7 @@ import { errorHandler } from "./middlewares/errorHandler";
 import { connectPostgres } from "./db/postgres";
 import config from "./config/config";
 import userRoutes from "./routes/userRoutes";
+import healthRoutes from "./routes/healthRoutes";
 const app = express();
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -19,7 +20,7 @@ connectPostgres();
 
 // Routes
 app.use("/api/user", userRoutes);
-
+app.use("/api/health", healthRoutes);
 // Error handling
 app.use(errorHandler);
 
